@@ -2,9 +2,13 @@ import sbt._
 import Keys._
 
 object FPInScalaBuild extends Build {
+
+
   val opts = Project.defaultSettings ++ Seq(
     scalaVersion := "2.11.7",
-    resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/"
+    resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
+    libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.5" % "test",
+    scalacOptions += "–Xmax-classfile-name 100"
   )
 
   lazy val root =

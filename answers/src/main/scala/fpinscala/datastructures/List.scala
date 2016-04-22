@@ -98,7 +98,7 @@ object List { // `List` companion object. Contains functions for creating and wo
   */
   def dropWhile[A](l: List[A], f: A => Boolean): List[A] =
     l match {
-      case Cons(h,t) if f(h) => dropWhile(t, f)
+      case Cons(h,t) if f(h) => dropWhile(t,f)
       case _ => l
     }
 
@@ -193,7 +193,7 @@ object List { // `List` companion object. Contains functions for creating and wo
   `append` simply replaces the `Nil` constructor of the first list with the second list, which is exactly the operation
   performed by `foldRight`.
   */
-  def appendViaFoldRight[A](l: List[A], r: List[A]): List[A] =
+  def appendViaFoldLeft[A](l: List[A], r: List[A]): List[A] =
     foldRight(l, r)(Cons(_,_))
 
   /*
