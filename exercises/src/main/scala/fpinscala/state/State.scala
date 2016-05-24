@@ -20,6 +20,13 @@ object RNG {
   type Rand[+A] = RNG => (A, RNG)
 
   val int: Rand[Int] = _.nextInt
+  val nonNegInt: Rand[Int] = map(int)(i => if (i<0) -(i+1) else i)
+  val negInt: Rand[Int] = map(int)(i => if (i>=0) -(i+1) else i)
+  val boolean: Rand[Boolean] = map(int)(_ % 2 == 0)
+
+  /*def boolean(rng: RNG): (Boolean, RNG) =
+    rng.nextInt match { case (i,rng2) => (i%2==0,rng2) }*/
+
 
   def unit[A](a: A): Rand[A] =
     rng => (a, rng)
@@ -35,6 +42,7 @@ object RNG {
     (if (i<0) -(i+1) else i, r)
   }
 
+
   def double(rng: RNG): (Double, RNG) = {
     val (i,r) = nonNegativeInt(rng)
     ( i / (Int.MaxValue.toDouble + 1), r)
@@ -46,6 +54,7 @@ object RNG {
     val (d, r2) = double(r1)
     ((i,d),r2)
   }
+
 
   def doubleInt(rng: RNG): ((Double,Int), RNG) = {
     val ((i,d),r1) = intDouble(rng)

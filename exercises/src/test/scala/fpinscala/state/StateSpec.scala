@@ -69,6 +69,15 @@ class StateSpec extends WordSpec  with Matchers  {
       }
     }
 
+    // extra
+
+    "provide #boolean" which {
+      "returns a boolean and the next ring" in {
+        boolean(Simple(42)) shouldEqual (false, Simple(1059025964525L))
+        boolean(Simple(1)) shouldEqual (true, Simple(25214903928L))
+      }
+    }
+
     // 6.5
 
     "provide #doubleViaMap" which {

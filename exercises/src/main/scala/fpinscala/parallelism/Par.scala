@@ -29,10 +29,24 @@ object Par {
       def call = a(es).get
     })
 
+  def lazyUnit[A](a: =>A): Par[A] = fork(unit(a))
+
+  def asyncF[A,B](f: A => B): A => Par[B] = a => lazyUnit(f(a))
+
   def map[A,B](pa: Par[A])(f: A => B): Par[B] = 
     map2(pa, unit(()))((a,_) => f(a))
 
   def sortPar(parList: Par[List[Int]]) = map(parList)(_.sorted)
+
+  //7.5
+
+  def sequence[A](ps: List[Par[A]]): Par[List[A]] =
+    ps.foldRight[Par[List[A]]](unit(List()))((a,b) => map2(a,b)(_::_))
+
+  def parFilter[A](as: List[A])(f: A => Boolean): Par[List[A]] =
+    map(sequence(
+      as.map(asyncF(a => if (f(a)) List(a) else List()))
+    ))(_.flatten)
 
   def equal[A](e: ExecutorService)(p: Par[A], p2: Par[A]): Boolean = 
     p(e).get == p2(e).get
