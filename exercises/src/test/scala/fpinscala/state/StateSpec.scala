@@ -120,6 +120,23 @@ class StateSpec extends WordSpec  with Matchers  {
         nonNegativeLessThan(Int.MaxValue/2)(Simple(42))._1 shouldBe < (Int.MaxValue/2)
       }
     }
+
+    // extra credit
+
+    "provide #char" which {
+
+      "returns a pseudo-random character" in {
+        char(Simple(420))shouldEqual ('벪', Simple(10590259645151L))
+      }
+    }
+
+    "provide #string" which {
+      "returns a pseudo-random string and the next ring" in {
+        string(Simple(1)) shouldEqual (
+          "䢍ᅙ辦ꢱ偤ﮡ庺粫숛媼⢢섶뉵㑔㷉붅딙狆㘭꺴突ꬲ냗蛙ヨ鶂涘隰᜞オ췵굺漰팡盕䟯ϕ᜗粰窡㈇㭷",
+          Simple(164047273559336L))
+      }
+    }
   }
 
   "Candy" when {

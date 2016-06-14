@@ -137,6 +137,13 @@ object Gen {
   def unit[A](a: => A): Gen[A] = Gen(State.unit(a))
 
   val boolean: Gen[Boolean] = Gen(State(RNG.boolean))
+  val int: Gen[Int] = Gen(State(RNG.int))
+  val string: Gen[String] = Gen(State(RNG.string))
+  val optionInt: Gen[Option[Int]] = Gen(State(RNG.optionInt))
+  val stringInt: Gen[(String, Int)] = Gen(State(RNG.stringInt))
+  val stringIntMap: Gen[Map[String,Int]] =
+    listOfN(100, Gen(State(RNG.stringInt))).map(tups =>
+      (Map[String,Int]() /: tups)((acc,tup) => acc.updated(tup._1, tup._2)))
 
   def choose(start: Int, stop: Int): Gen[Int] =
     Gen(State(RNG.nonNegativeInt).map(n => start + n % (stop - start)))

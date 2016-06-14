@@ -22,10 +22,20 @@ object RNG {
   val int: Rand[Int] = _.nextInt
   val nonNegInt: Rand[Int] = map(int)(i => if (i<0) -(i+1) else i)
   val negInt: Rand[Int] = map(int)(i => if (i>=0) -(i+1) else i)
+
   val boolean: Rand[Boolean] = map(int)(_ % 2 == 0)
 
-  /*def boolean(rng: RNG): (Boolean, RNG) =
-    rng.nextInt match { case (i,rng2) => (i%2==0,rng2) }*/
+  val optionInt: Rand[Option[Int]] =
+    flatMap(boolean)(bool =>
+      map(int)(n => if (bool) Some(n) else None))
+
+  val char: Rand[Char] = map(int)(_.toChar)
+  val string: Rand[String] =
+    flatMap(nonNegativeLessThan(100))(n =>
+      map(ints(n))(ns =>("" /: ns)(_ + _.toChar)))
+
+  val stringInt: Rand[(String,Int)] =
+    flatMap(string)(str => map(int)(n => (str,n)))
 
 
   def unit[A](a: A): Rand[A] =
