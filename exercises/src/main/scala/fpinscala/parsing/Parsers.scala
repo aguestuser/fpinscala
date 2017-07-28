@@ -2,7 +2,7 @@ package fpinscala.parsing
 
 import fpinscala.testing._
 import Prop._
-import sun.org.mozilla.javascript.NativeJSON
+//import sun.org.mozilla.javascript.NativeJSON
 import language.higherKinds
 import scala.util.matching.Regex
 

@@ -30,6 +30,7 @@ object FPInScalaBuild extends Build {
             base = file("answers"),
             settings = opts)
 
+
   def nio2check(): String = {
     val cls = "java.nio.channels.AsynchronousFileChannel"
     try {Class.forName(cls); ""}

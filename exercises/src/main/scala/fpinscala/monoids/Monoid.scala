@@ -31,12 +31,12 @@ object Monoid {
   }
 
   val stringMonoid = new Monoid[String] {
-    def op(a1: String, a2: String) = a1 + a2
+    def op(a1: String, a2: String): String = a1 + a2
     val zero = ""
   }
 
   def listMonoid[A] = new Monoid[List[A]] {
-    def op(a1: List[A], a2: List[A]) = a1 ++ a2
+    def op(a1: List[A], a2: List[A]): List[A] = a1 ++ a2
     val zero = Nil
   }
 
@@ -100,10 +100,10 @@ object Monoid {
   // combinators
 
   def concatenate[A](as: List[A], m: Monoid[A]): A =
-    (m.zero /: as)(m.op)
+    as.foldLeft(m.zero)(m.op)
 
   def foldMap[A, B](as: List[A], m: Monoid[B])(f: A => B): B =
-    (m.zero /: as)((b,a) => m.op(b, f(a)))
+    as.foldLeft(m.zero)((b,a) => m.op(b, f(a)))
 
   def foldRight[A, B](as: List[A])(z: B)(f: (A, B) => B): B =
     foldMap(as, endoMonoid[B])(f.curried)(z)
